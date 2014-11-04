@@ -87,6 +87,10 @@ public class ConnectMysql implements Connect {
 	
 	}
 	
+	public void update() {
+		
+	}
+	
 	// Meanwhile only to print the whole select
 	/**
 	 * Prints the whole query as text

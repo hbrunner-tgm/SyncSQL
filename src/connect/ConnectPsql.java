@@ -78,8 +78,6 @@ public class ConnectPsql implements Connect {
 		return null;
 	}
 
-
-
 	// Meanwhile only to print the whole select
 	/**
 	 * Prints the whole query as text
