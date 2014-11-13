@@ -78,7 +78,7 @@ public class Mapper {
 		switch(s) {
 
 		case DELETE:
-			
+
 			try {
 
 				int pkid= rs.getInt("id");
@@ -99,7 +99,39 @@ public class Mapper {
 
 		case INSERT:
 
+			try {
 
+				int id= rs.getInt("id"),
+						leistung= rs.getInt("leistung"),
+						version= rs.getInt("version");
+
+				String 	marke= rs.getString("marke"),
+						modell= rs.getString("modell");
+
+
+				boolean wreifen= rs.getBoolean("wreifen");
+				String swreifen;
+				if(wreifen==true)
+					swreifen= "'1'";
+				else
+					swreifen= "'0'";
+
+				String insertString= "INSERT into raeder VALUES ("
+						+ id + ","
+						+ "'"+ marke +"',"
+						+ "'" + modell + "',"
+						+ leistung + ","
+						+ version + ","
+						+ swreifen + ")";
+
+				psql.update(insertString);
+
+				mysql.update("DELETE FROM insertEntry WHERE id="+ id);
+
+			} catch (SQLException e) {
+				log.info("Error in maptopsql insert");
+				log.error(e);
+			}
 
 			break;
 
@@ -145,6 +177,40 @@ public class Mapper {
 
 		case INSERT:
 
+			try {
+
+				int id= rs.getInt("id"),
+						leistung= rs.getInt("leistung"),
+						version= rs.getInt("version");
+
+				String 	marke= rs.getString("marke"),
+						modell= rs.getString("modell");
+
+
+				boolean wreifen= rs.getBoolean("wreifen");
+				String swreifen;
+				if(wreifen==true)
+					swreifen= "'1'";
+				else
+					swreifen= "'0'";
+
+				String insertString= "INSERT into raeder VALUES ("
+						+ id + ","
+						+ "'"+ marke +"',"
+						+ "'" + modell + "',"
+						+ leistung + ","
+						+ version + ","
+						+ swreifen + ")";
+
+				mysql.update(insertString);
+
+				psql.update("DELETE FROM insertentry WHERE id="+ id);
+
+
+			} catch (SQLException e) {
+				log.info("Error in maptomysql insert");
+				log.error(e);
+			}
 
 
 			break;

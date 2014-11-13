@@ -49,6 +49,8 @@ public class SyncDatabases implements Runnable, Stoppable {
 				
 				/* ----- psql ----- */
 				
+					// deletions
+				
 				/*
 				 * Reads from the deletedentry table
 				 * if there is a new row the data from the table will be deleted also on the mysql-database
@@ -62,7 +64,22 @@ public class SyncDatabases implements Runnable, Stoppable {
 				}
 
 				
+					// inserts
+				
+				rs= psql.execute("select * from insertentry");
+				
+				if(rs.next()) {
+
+					log.info("insert in psql");
+					
+					map.maptomysql(rs, State.INSERT);
+				}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+				
 				/* ----- mysql ----- */
+				
+					// deletions
 				
 				/*
 				 * the same like psql
@@ -76,6 +93,18 @@ public class SyncDatabases implements Runnable, Stoppable {
 					map.maptopsql(rs, State.DELETE);
 				}
 				
+					// inserts
+				
+				rs= mysql.execute("select * from insertEntry");
+				
+				if(rs.next()) {
+
+					log.info("insert in mysql");
+					
+					map.maptopsql(rs, State.INSERT);
+				}
+
+				
 			} catch (SQLException e) {
 				log.error(e);
 			}
@@ -87,9 +116,7 @@ public class SyncDatabases implements Runnable, Stoppable {
 	 */
 	@Override
 	public void stop() {
-		
 		running= false;
-		
 	}
 
 }
