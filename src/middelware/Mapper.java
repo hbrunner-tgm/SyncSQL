@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import starter.RunIt;
 import api.State;
 import connect.ConnectMysql;
 import connect.ConnectPsql;
@@ -21,19 +24,27 @@ public class Mapper {
 
 	private ConnectPsql psql= ConnectPsql.get();
 	private ConnectMysql mysql= ConnectMysql.get();
+	private static Logger log= Logger.getLogger(RunIt.class.getName());
 
 	private static Mapper instance;
 
-	private ResultSetMetaData rsmd;
-
+	/**
+	 * Returns a instance from this class
+	 * @return the instance
+	 */
 	public static Mapper get() {
 		if(instance==null)
 			instance= new Mapper();
 		return instance;
 	}
 
+	/**
+	 * Private Constructor for the Singleton-Pattern
+	 */
 	private Mapper() {
 
+		//TODO think about this lines
+		//idee to make a model to map the data
 		mysqlModel= new HashMap<String, ArrayList<String>>();
 		psqlModel= new HashMap<String, ArrayList<String>>();
 
@@ -67,6 +78,22 @@ public class Mapper {
 		switch(s) {
 
 		case DELETE:
+			
+			try {
+
+				int pkid= rs.getInt("id");
+
+				log.info("maptopsql\n\t\tDELETE FROM raeder WHERE id="+ pkid);
+
+				psql.update("DELETE FROM raeder WHERE id="+ pkid);
+
+				mysql.update("DELETE FROM deletedEntry WHERE id="+ pkid);
+
+			}catch(SQLException e) {
+				log.info( "Error in maptopsql delete" );
+				log.error(e);
+			}
+
 
 			break;
 
@@ -99,24 +126,27 @@ public class Mapper {
 		case DELETE:
 
 			try {
-				
+
 				int pkid= rs.getInt("id");
 
-				System.out.println(pkid);
+				log.info("maptomysql\n\t\tDELETE FROM raeder WHERE id="+ pkid);
 
 				mysql.update("DELETE FROM raeder WHERE id="+ pkid);
 
 				psql.update("DELETE FROM deletedentry WHERE id="+ pkid);
 
 			}catch(SQLException e) {
-				System.err.println("Error In mysqlmapper delete");
-				System.err.println( e.getMessage() );
+				log.info( "Error in maptomysql delete" );
+				log.error(e);
 			}
-			
-			
+
+
 			break;
 
 		case INSERT:
+
+
+
 			break;
 
 		case UPDATE:

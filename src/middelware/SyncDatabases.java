@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import api.State;
 import api.Stoppable;
 import connect.ConnectMysql;
@@ -11,6 +13,9 @@ import connect.ConnectPsql;
 
 /**
  * The Class to sync the databases
+ * 
+ * A Thread which syncs the two databases.
+ * 
  * @author Helmuth Brunner
  * @version Nov 4, 2014
  * Current project: VSDBSyncDB
@@ -19,16 +24,18 @@ public class SyncDatabases implements Runnable, Stoppable {
 
 	private ConnectPsql psql= ConnectPsql.get();
 	private ConnectMysql mysql= ConnectMysql.get();
-	
-	private String oldversionpsql, oldversionmysql;
-	
+
 	private ResultSet rs;
-	private ResultSetMetaData rsmd;
 	
 	private Mapper map= Mapper.get();
 	
 	private boolean running;
+
+	private static Logger log= Logger.getLogger(SyncDatabases.class.getName());
 	
+	/**
+	 * Constructor
+	 */
 	public SyncDatabases() {
 		running= true;
 	}
@@ -38,25 +45,46 @@ public class SyncDatabases implements Runnable, Stoppable {
 		
 		while(running) {
 			
-			rs= psql.execute("select * from deletedentry");
-			
 			try {
 				
+				/* ----- psql ----- */
+				
+				/*
+				 * Reads from the deletedentry table
+				 * if there is a new row the data from the table will be deleted also on the mysql-database
+				 */
+				rs= psql.execute("select * from deletedentry");
 				if(rs.next()) {
-//					rs.beforeFirst();
 
-					System.out.println("in running");
+					log.info("delete in psql");
 					
 					map.maptomysql(rs, State.DELETE);
 				}
 
+				
+				/* ----- mysql ----- */
+				
+				/*
+				 * the same like psql
+				 */
+				rs= mysql.execute("select * from deletedEntry");
+				
+				if(rs.next()) {
+
+					log.info("delete in mysql");
+					
+					map.maptopsql(rs, State.DELETE);
+				}
+				
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e);
 			}
 		}
 	}
 
+	/**
+	 * Method to stop the thread
+	 */
 	@Override
 	public void stop() {
 		

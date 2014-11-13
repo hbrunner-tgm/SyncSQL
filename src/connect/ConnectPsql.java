@@ -1,11 +1,11 @@
 package connect;
 
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
 import org.postgresql.jdbc2.optional.SimpleDataSource;
 
 import sync.Base;
@@ -20,13 +20,16 @@ import api.Connect;
 public class ConnectPsql implements Connect {
 
 	private static ConnectPsql instance;
-
 	private String username, password, hostname, database;
-
-	private Base b= Base.get();
-
 	private Connection c;
-
+	
+	private Base b= Base.get();
+	private static Logger log= Logger.getLogger(ConnectPsql.class.getName());
+	
+	/**
+	 * Returns the instance from this class
+	 * @return the instance
+	 */
 	public static ConnectPsql get() {
 		if(instance==null)
 			instance= new ConnectPsql();
@@ -61,7 +64,7 @@ public class ConnectPsql implements Connect {
 		try {
 			c= sds.getConnection();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(e);
 		}
 
 	}
@@ -74,18 +77,22 @@ public class ConnectPsql implements Connect {
 		try {
 			return c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(e);
 		}
 		return null;
 	}
 	
 	/**
-	 * 
+	 * Method to make an update oder insert into the database
+	 * @param sql the sql-query
+	 * @return if it was successful
 	 */
 	public boolean update(String sql) {
 		try {
 			return c.prepareStatement(sql).execute();
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			log.error(e);
+		}
 		return false;
 	}
 
@@ -100,6 +107,7 @@ public class ConnectPsql implements Connect {
 
 		String erg= "";
 		int columns= 0;
+		
 		try {
 			ResultSetMetaData rsmd= rs.getMetaData();
 			columns= rsmd.getColumnCount();
@@ -116,18 +124,21 @@ public class ConnectPsql implements Connect {
 				erg+= "\n";
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(e);
 		}
 
 		return erg;
 	}
 	
+	/**
+	 * Close the connection to the db
+	 */
 	@Override
 	public void exit() {
 		try {
 			c.close();
 		} catch (SQLException e) {
-			System.out.println("Unable to disconnect from the server!");
+			log.info("Unable to disconnect from the server!");
 		}
 	}
 

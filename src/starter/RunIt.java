@@ -2,6 +2,8 @@ package starter;
 
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.Logger;
+
 import middelware.SyncDatabases;
 import sync.Base;
 import connect.ConnectMysql;
@@ -14,27 +16,22 @@ import connect.ConnectPsql;
  * Current project: VSDBSyncDB
  */
 public class RunIt {
-
 	public static void main(String[] args) throws InterruptedException {
 
 		Base.get();
+		Logger log= Logger.getLogger(RunIt.class.getName()); // for logging
 
-		//		ConnectMysql cm= ConnectMysql.get();
-		//		
-		//
-		//		System.out.println( cm.full("select * from speise") ); // returns the whole table
-		//		
-
+		// Creates the Connections
 		ConnectPsql.get();
 		ConnectMysql.get();
 
-//		System.out.println( cp.full("select * from raeder") ); // returns the whole table
-
-		Thread t= new Thread(new SyncDatabases());
-		t.start();
+		Thread t= new Thread(new SyncDatabases()); // Create the thread
+		t.start(); // start the thread
 
 		Object[] options = {"Stop Syncing"};
 
+		// opens a new OptionPane
+		// if you press stop syncing the programm won't sync the data anymore
 		int erg= JOptionPane.showOptionDialog(
 				null,
 				"Sync is running",
@@ -43,14 +40,15 @@ public class RunIt {
 				JOptionPane.INFORMATION_MESSAGE, 
 				null, options, options[0]);
 
+		// if stop syncing is pressed
 		if(erg==0) {
 			t.stop();
 			
+			// Close the connections to the databases
 			ConnectPsql.get().exit();
 			ConnectMysql.get().exit();
 			
-			System.out.println("Connections Closed");
-			
+			log.info("Connections Closed");
 		}
 	}
 }
