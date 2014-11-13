@@ -1,5 +1,6 @@
 package connect;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -77,6 +78,16 @@ public class ConnectPsql implements Connect {
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 */
+	public boolean update(String sql) {
+		try {
+			return c.prepareStatement(sql).execute();
+		} catch (SQLException e) {}
+		return false;
+	}
 
 	// Meanwhile only to print the whole select
 	/**
@@ -109,6 +120,15 @@ public class ConnectPsql implements Connect {
 		}
 
 		return erg;
+	}
+	
+	@Override
+	public void exit() {
+		try {
+			c.close();
+		} catch (SQLException e) {
+			System.out.println("Unable to disconnect from the server!");
+		}
 	}
 
 }

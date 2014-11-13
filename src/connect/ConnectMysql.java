@@ -87,8 +87,15 @@ public class ConnectMysql implements Connect {
 	
 	}
 	
-	public void update() {
-		
+	/**
+	 * For an update on the database
+	 * @return
+	 */
+	public int update(String sql) {
+		try {
+			return c.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {}
+		return 0;
 	}
 	
 	// Meanwhile only to print the whole select
@@ -122,6 +129,15 @@ public class ConnectMysql implements Connect {
 		}
 
 		return erg;
+	}
+	
+	@Override
+	public void exit() {
+		try {
+			c.close();
+		} catch (SQLException e) {
+			System.out.println("Unable to disconnect from the server!");
+		}
 	}
 	
 }

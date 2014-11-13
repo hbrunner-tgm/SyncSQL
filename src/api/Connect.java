@@ -22,4 +22,9 @@ public interface Connect {
 	 */
 	public ResultSet execute(String sql);
 	
+	/**
+	 * Close the connection
+	 */
+	public void exit();
+	
 }
