@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SyncDB" default="compile" basedir=".">
+
+	
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value="bin" />
+	<property name="lib.dir" value="lib" />
+	<property name="doc.dir" value="doc" />
+	
+	<!-- Pfad setzen -->
+	<path id="SyncDB.classpath">
+		<fileset dir="lib">
+			<include name= "**/*.jar"/>
+		</fileset>
+        <pathelement location="${build.dir}"/>
+    </path>
+	
+	<!-- Source files kompilieren -->
+	<target name="compile" description="Compile project.">
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="SyncDB.classpath" debug="true" deprecation="true" includeantruntime="false">
+			<classpath>
+        		<pathelement path="lib/log4j-1.2.17.jar"/>
+    		</classpath>
+		</javac>
+	</target>
+	
+	<!-- bin Ordner leeren/loeschen -->
+	<target name="clean" description="Clean build products.">
+		<delete dir="${build.dir}" />
+	</target>
+	
+	<!-- Javadoc erstellen -->
+	<target name="create-doc" description="Create javadoc.">
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}" />
+	</target>
+	
+	<!-- Javadoc loeschen -->
+	<target name="clean-doc" description="Delete javadoc.">
+		<delete dir="${doc.dir}"/>
+	</target>
+	
+	<!-- Loescht und kompiliert das Projekt neu -->
+	<target name="rebuild" depends="clean, compile" description="Clean and build products." />
+	
+	<!-- Programm starten -->
+    <target name="run">
+        <java classname="starter.RunIt" failonerror="true" fork="yes" description="Run Sync">
+            <classpath refid="SyncDB.classpath"/>
+        </java>
+    </target>
+
+</project>
