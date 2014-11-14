@@ -47,6 +47,6 @@ Mithilfe von Ant das Programm starten.
 
 `ant run`
 
-Nun sollte ein Fenster erschein.
+Nun sollte ein Fenster erscheinen.
 
 Zum Schliesen der Anwendung den "Stop Syncing" - Button klicken.
