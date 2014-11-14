@@ -8,5 +8,7 @@
 *.war
 *.ear
 
+*.lock
+*.svg
 /bin/
 /log
