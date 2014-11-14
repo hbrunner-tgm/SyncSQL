@@ -37,3 +37,14 @@ Dokumenation der Funktionsweise, Problematiken und Problemfälle [2Pkt]
   - unbehandelte Problemfälle
 
 Protokoll und Sourcecodedokumentation [0..-6Pkt]
+
+Ausführen der Anwendung
+------
+
+Mithilfe von Ant das Programm starten.
+
+`ant run`
+
+Nun sollte ein Fenster erschein.
+
+Zum Schliesen der Anwendung den "Stop Syncing" - Button klicken.
