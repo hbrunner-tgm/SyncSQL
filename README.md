@@ -41,6 +41,8 @@ Protokoll und Sourcecodedokumentation [0..-6Pkt]
 Ausführen der Anwendung
 ------
 
+Einbinden der SQL-Files in die DB und die IP Adresse setzen.
+
 Mithilfe von Ant das Programm starten.
 
 `ant run`
