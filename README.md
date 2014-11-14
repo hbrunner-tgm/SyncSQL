@@ -41,7 +41,7 @@ Protokoll und Sourcecodedokumentation [0..-6Pkt]
 Ausführen der Anwendung
 ------
 
-Einbinden der SQL-Files in die DB und die IP Adresse setzen.
+Einbinden der SQL-Files in die DB und die IP Adresse setzen. In der Datei src/res/settings.properties
 
 Mithilfe von Ant das Programm starten.
 
