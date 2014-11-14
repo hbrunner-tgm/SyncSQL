@@ -26,31 +26,31 @@ public class SyncDatabases implements Runnable, Stoppable {
 	private ConnectMysql mysql= ConnectMysql.get();
 
 	private ResultSet rs;
-	
+
 	private Mapper map= Mapper.get();
-	
+
 	private boolean running;
 
 	private static Logger log= Logger.getLogger(SyncDatabases.class.getName());
-	
+
 	/**
 	 * Constructor
 	 */
 	public SyncDatabases() {
 		running= true;
 	}
-	
+
 	@Override
 	public void run() {
-		
+
 		while(running) {
-			
+
 			try {
-				
+
 				/* ----- psql ----- */
-				
-					// deletions
-				
+
+				// deletions
+
 				/*
 				 * Reads from the deletedentry table
 				 * if there is a new row the data from the table will be deleted also on the mysql-database
@@ -59,52 +59,74 @@ public class SyncDatabases implements Runnable, Stoppable {
 				if(rs.next()) {
 
 					log.info("delete in psql");
-					
+
 					map.maptomysql(rs, State.DELETE);
 				}
 
-				
-					// inserts
-				
+
+				// inserts
+
 				rs= psql.execute("select * from insertentry");
-				
+
 				if(rs.next()) {
 
 					log.info("insert in psql");
-					
+
 					map.maptomysql(rs, State.INSERT);
 				}
 
-// ----------------------------------------------------------------------------------------------------------------------------------
-				
+				// update
+
+				rs= psql.execute("select * from raeder");
+
+				if(rs.next()) {
+
+					log.info("Start to update");
+
+					map.maptomysql(rs, State.UPDATE);
+				}
+
+				// ----------------------------------------------------------------------------------------------------------------------------------
+
 				/* ----- mysql ----- */
-				
-					// deletions
-				
+
+				// deletions
+
 				/*
 				 * the same like psql
 				 */
 				rs= mysql.execute("select * from deletedEntry");
-				
+
 				if(rs.next()) {
 
 					log.info("delete in mysql");
-					
+
 					map.maptopsql(rs, State.DELETE);
 				}
-				
-					// inserts
-				
+
+				// inserts
+
 				rs= mysql.execute("select * from insertEntry");
-				
+
 				if(rs.next()) {
 
 					log.info("insert in mysql");
-					
+
 					map.maptopsql(rs, State.INSERT);
 				}
 
-				
+				// update
+
+				rs= mysql.execute("select * from raeder");
+
+				if(rs.next()) {
+
+					log.info("Start to update");
+
+					map.maptopsql(rs, State.UPDATE);
+				}
+
+
 			} catch (SQLException e) {
 				log.error(e);
 			}

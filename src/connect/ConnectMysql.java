@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
 
+import org.apache.log4j.Logger;
+
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import sync.Base;
@@ -22,6 +24,8 @@ public class ConnectMysql implements Connect {
 	private Base b= Base.get();
 	
 	private String username, password, hostname, database;
+	
+	private static Logger log= Logger.getLogger(ConnectMysql.class.getName());
 	
 	private Connection c;
 	
@@ -65,7 +69,7 @@ public class ConnectMysql implements Connect {
 		try {
 			c= mds.getConnection();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Error to create the connection", e);
 		}
 		
 	}
@@ -81,7 +85,7 @@ public class ConnectMysql implements Connect {
 		try {
 			return c.createStatement().executeQuery(query);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Error in execute", e);
 		}
 		return null;
 	
@@ -94,7 +98,9 @@ public class ConnectMysql implements Connect {
 	public int update(String sql) {
 		try {
 			return c.createStatement().executeUpdate(sql);
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			log.error("Error in update", e);
+		}
 		return 0;
 	}
 	
@@ -125,18 +131,21 @@ public class ConnectMysql implements Connect {
 				erg+= "\n";
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Error in full", e);
 		}
 
 		return erg;
 	}
 	
+	/**
+	 * Closes the connections
+	 */
 	@Override
 	public void exit() {
 		try {
 			c.close();
 		} catch (SQLException e) {
-			System.out.println("Unable to disconnect from the server!");
+			log.error("Unable to disconnect from the server!");
 		}
 	}
 	

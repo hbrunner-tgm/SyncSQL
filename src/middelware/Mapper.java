@@ -13,7 +13,7 @@ import connect.ConnectMysql;
 import connect.ConnectPsql;
 
 /**
- * A Mapper
+ * A Mapper which maps the data to the different databases
  * @author Helmuth Brunner
  * @version Nov 13, 2014
  * Current project: VSDBSyncDB
@@ -77,6 +77,11 @@ public class Mapper {
 
 		switch(s) {
 
+		/*
+		 * 
+		 * Snycs a delete
+		 * 
+		 */
 		case DELETE:
 
 			try {
@@ -97,6 +102,12 @@ public class Mapper {
 
 			break;
 
+		
+		/*
+		 *
+		 * Snycs a insert
+		 * 
+		 */
 		case INSERT:
 
 			try {
@@ -135,9 +146,64 @@ public class Mapper {
 
 			break;
 
+		/*
+		 * 
+		 * Syncs a update
+		 * 
+		 */
 		case UPDATE:
 
+			try {
 
+				ResultSet respsql;
+
+				for(int i=0; rs.next(); i++) {
+
+					log.info("Counter:" +i);
+
+					int id= rs.getInt("id");
+					respsql= psql.execute("select * from raeder where id= "+id);
+					respsql.next();
+
+					if(rs.getInt("version") > respsql.getInt("version")) {
+						// Do update
+						log.info("there is an update in MYSQL on pk= " + rs.getInt("id"));
+
+						int leistung= rs.getInt("leistung"),
+								version= rs.getInt("version");
+
+						String 	marke= rs.getString("marke"),
+								modell= rs.getString("modell");
+
+						boolean wreifen= rs.getBoolean("wreifen");
+						String swreifen;
+
+						// Maps a boolean value
+						if(wreifen==true)
+							swreifen= "'1'";
+						else
+							swreifen= "'0'";
+
+						String updateString= "UPDATE raeder SET marke= '"+ marke + "',"
+
+								+ " modell= '" + modell + "',"
+								+ " leistung= "+ leistung + ","
+								+ "version= "+ version + ","
+								+ "wreifen=" + swreifen
+								+ "where id= "+rs.getInt("id");
+
+						log.info(updateString);
+
+						psql.update(updateString);
+
+					}
+
+				}
+
+			} catch (SQLException e) {
+				log.info("Error in maptomysql update");
+				log.error(e);
+			}
 
 			break;
 		}
@@ -155,6 +221,9 @@ public class Mapper {
 
 		switch(s) {
 
+		/*
+		 * Syncs a delete
+		 */
 		case DELETE:
 
 			try {
@@ -175,6 +244,9 @@ public class Mapper {
 
 			break;
 
+		/*
+		 * Syncs a insert
+		 */
 		case INSERT:
 
 			try {
@@ -189,6 +261,8 @@ public class Mapper {
 
 				boolean wreifen= rs.getBoolean("wreifen");
 				String swreifen;
+
+				// Maps a boolean value
 				if(wreifen==true)
 					swreifen= "'1'";
 				else
@@ -215,7 +289,65 @@ public class Mapper {
 
 			break;
 
+		/*
+		 * Syncs a update
+		 */
 		case UPDATE:
+
+
+			try {
+
+				ResultSet resmy;
+
+				// iterats thru the whole tabel
+				for(int i=0; rs.next(); i++) {
+
+					log.info("Counter:" +i);
+
+					int id= rs.getInt("id");
+					resmy= mysql.execute("select * from raeder where id= "+id);
+					resmy.next();
+
+					if(rs.getInt("version") > resmy.getInt("version")) {
+						// Do update
+						log.info("there is an update in PSQL on pk= " + rs.getInt("id"));
+
+						int leistung= rs.getInt("leistung"),
+								version= rs.getInt("version");
+
+						String 	marke= rs.getString("marke"),
+								modell= rs.getString("modell");
+
+						boolean wreifen= rs.getBoolean("wreifen");
+						String swreifen;
+
+						// Maps a boolean value
+						if(wreifen==true)
+							swreifen= "'1'";
+						else
+							swreifen= "'0'";
+
+						String updateString= "UPDATE raeder SET marke= '"+ marke + "',"
+
+								+ " modell= '" + modell + "',"
+								+ " leistung= "+ leistung + ","
+								+ "version= "+ version + ","
+								+ "wreifen=" + swreifen
+								+ "where id= "+rs.getInt("id");
+
+						log.info(updateString);
+
+						mysql.update(updateString);
+
+					}
+
+				}
+
+			} catch (SQLException e) {
+				log.info("Error in maptomysql update");
+				log.error(e);
+			}
+
 			break;
 		}
 
