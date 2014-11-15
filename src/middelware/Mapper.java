@@ -16,6 +16,7 @@ import connect.ConnectPsql;
  * A Mapper which maps the data to the different databases
  * @author Helmuth Brunner
  * @version Nov 13, 2014
+ * 
  * Current project: VSDBSyncDB
  */
 public class Mapper {
@@ -65,7 +66,6 @@ public class Mapper {
 		raederp.add("date");
 
 		psqlModel.put("raeder", raederp);
-
 	}
 
 	/**
@@ -78,7 +78,6 @@ public class Mapper {
 		switch(s) {
 
 		/*
-		 * 
 		 * Snycs a delete
 		 * 
 		 */
@@ -99,7 +98,6 @@ public class Mapper {
 				log.error(e);
 			}
 
-
 			break;
 
 		
@@ -118,7 +116,6 @@ public class Mapper {
 
 				String 	marke= rs.getString("marke"),
 						modell= rs.getString("modell");
-
 
 				boolean wreifen= rs.getBoolean("wreifen");
 				String swreifen;
@@ -195,9 +192,7 @@ public class Mapper {
 						log.info(updateString);
 
 						psql.update(updateString);
-
 					}
-
 				}
 
 			} catch (SQLException e) {
@@ -241,7 +236,6 @@ public class Mapper {
 				log.error(e);
 			}
 
-
 			break;
 
 		/*
@@ -257,7 +251,6 @@ public class Mapper {
 
 				String 	marke= rs.getString("marke"),
 						modell= rs.getString("modell");
-
 
 				boolean wreifen= rs.getBoolean("wreifen");
 				String swreifen;
@@ -280,7 +273,6 @@ public class Mapper {
 
 				psql.update("DELETE FROM insertentry WHERE id="+ id);
 
-
 			} catch (SQLException e) {
 				log.info("Error in maptomysql insert");
 				log.error(e);
@@ -293,7 +285,6 @@ public class Mapper {
 		 * Syncs a update
 		 */
 		case UPDATE:
-
 
 			try {
 
@@ -338,9 +329,7 @@ public class Mapper {
 						log.info(updateString);
 
 						mysql.update(updateString);
-
 					}
-
 				}
 
 			} catch (SQLException e) {
@@ -350,7 +339,5 @@ public class Mapper {
 
 			break;
 		}
-
 	}
-
 }

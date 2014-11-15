@@ -26,7 +26,7 @@ public class Base {
 	private Base() {
 		
 		settings= this.loadProperties("settings");
-		this.loadSystemLanguage();
+//		this.loadSystemLanguage();
 		
 //		lang= this.loadProperties("lang_"+this.getSettingString("lang"));
 	}

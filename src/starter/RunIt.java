@@ -10,9 +10,10 @@ import connect.ConnectMysql;
 import connect.ConnectPsql;
 
 /**
- * Just for test to run
+ * Main-Class to start the program
  * @author Helmuth Brunner
  * @version Nov 3, 2014
+ * 
  * Current project: VSDBSyncDB
  */
 public class RunIt {
@@ -41,7 +42,7 @@ public class RunIt {
 				null, options, options[0]);
 
 		// if stop syncing is pressed
-		if(erg==0) {
+		if(erg == 0 || erg == -1) {
 			t.stop();
 			
 			// Close the connections to the databases
