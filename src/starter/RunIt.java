@@ -5,7 +5,9 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import middelware.SyncDatabases;
+
 import sync.Base;
+
 import connect.ConnectMysql;
 import connect.ConnectPsql;
 
@@ -22,7 +24,7 @@ public class RunIt {
 		Base.get();
 		Logger log= Logger.getLogger(RunIt.class.getName()); // for logging
 
-		// Creates the Connections
+		// Create the Connections
 		ConnectPsql.get();
 		ConnectMysql.get();
 

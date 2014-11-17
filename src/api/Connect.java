@@ -6,6 +6,7 @@ import java.sql.ResultSet;
  * Connect interface
  * @author Helmuth Brunner
  * @version Nov 3, 2014
+ * 
  * Current project: VSDBSyncDB
  */
 public interface Connect {

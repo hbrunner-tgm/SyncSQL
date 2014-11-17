@@ -65,6 +65,7 @@ public class ConnectPsql implements Connect {
 			c= sds.getConnection();
 		} catch (SQLException e) {
 			log.error(e);
+			System.exit(-1);
 		}
 
 	}

@@ -16,6 +16,7 @@ import api.Connect;
  * A Class to connect to a Mysql-Server
  * @author Helmuth Brunner
  * @version Nov 3, 2014
+ * 
  * Current project: VSDBSyncDB
  */
 public class ConnectMysql implements Connect {
@@ -69,7 +70,8 @@ public class ConnectMysql implements Connect {
 		try {
 			c= mds.getConnection();
 		} catch (SQLException e) {
-			log.error("Error to create the connection", e);
+			log.error(e);
+			System.exit(-1);
 		}
 		
 	}

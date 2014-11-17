@@ -5,10 +5,14 @@
 .setting
 .classpath
 
+*.png
 *.war
 *.ear
 
 *.lock
 *.svg
+
 /bin/
 /log
+/build
+gitlog

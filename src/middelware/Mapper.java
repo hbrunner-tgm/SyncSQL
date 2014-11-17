@@ -65,7 +65,7 @@ public class Mapper {
 		raederp.add("leistung");
 		raederp.add("date");
 
-		psqlModel.put("raeder", raederp);
+		psqlModel.put("raederp", raederp);
 	}
 
 	/**
@@ -336,7 +336,7 @@ public class Mapper {
 				log.info("Error in maptomysql update");
 				log.error(e);
 			}
-
+			
 			break;
 		}
 	}

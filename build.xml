@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="SyncDB" default="compile" basedir=".">
 
-	
+	<!--
+
+	Build-File fuer die SyncDB Aufgabe aus DEZYS:
+
+	usage: "ant run" startet und kompiliert das Program neu
+
+	-->
+
 	<property name="src.dir" value="src" />
-	<property name="build.dir" value="bin" />
+	<property name="build.dir" value="build" />
 	<property name="lib.dir" value="lib" />
 	<property name="doc.dir" value="doc" />
-	
-	<!-- Pfad setzen -->
+	<property name="res.dir" value="src/res" />
+
+	<!-- Hinzufuegen der externen Libaries -->
 	<path id="SyncDB.classpath">
 		<fileset dir="lib">
 			<include name= "**/*.jar"/>
@@ -17,35 +25,43 @@
 	
 	<!-- Source files kompilieren -->
 	<target name="compile" description="Compile project.">
+		<echo>Compile</echo>
 		<mkdir dir="${build.dir}" />
 		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="SyncDB.classpath" debug="true" deprecation="true" includeantruntime="false">
-			<classpath>
-        		<pathelement path="lib/log4j-1.2.17.jar"/>
-    		</classpath>
 		</javac>
 	</target>
-	
-	<!-- bin Ordner leeren/loeschen -->
-	<target name="clean" description="Clean build products.">
+
+	<!-- Kopiert alle nicht .java Files in den build folder -->
+	<target name="copy" description="Copies the non-java-files">
+		<copy todir="${build.dir}">
+            <fileset dir="${src.dir}" excludes="**/*.java"/>
+        </copy>
+	</target>
+
+	<!-- build Ordner leeren/loeschen -->
+	<target name="clean" description="cleans the build-folder">
+		<echo>Clean</echo>
 		<delete dir="${build.dir}" />
 	</target>
 	
 	<!-- Javadoc erstellen -->
-	<target name="create-doc" description="Create javadoc.">
+	<target name="create-doc" description="Creates javadoc">
+		<echo>Create-Doc</echo>
 		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}" />
 	</target>
 	
 	<!-- Javadoc loeschen -->
 	<target name="clean-doc" description="Delete javadoc.">
+		<echo>Clean-Doc</echo>
 		<delete dir="${doc.dir}"/>
 	</target>
 	
 	<!-- Loescht und kompiliert das Projekt neu -->
 	<target name="rebuild" depends="clean, compile" description="Clean and build products." />
 	
-	<!-- Programm starten -->
-    <target name="run">
-        <java classname="starter.RunIt" failonerror="true" fork="yes" description="Run Sync">
+	<!-- Programm neue kompilieren und starten -->
+    <target name="run" depends="rebuild, copy">
+        <java classname="starter.RunIt" failonerror="false" fork="yes" description="Run Sync">
             <classpath refid="SyncDB.classpath"/>
         </java>
     </target>

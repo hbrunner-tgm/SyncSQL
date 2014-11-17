@@ -62,7 +62,6 @@ public class SyncDatabases implements Runnable, Stoppable {
 					map.maptomysql(rs, State.DELETE);
 				}
 
-
 				// inserts
 
 				rs= psql.execute("select * from insertentry");
@@ -124,7 +123,6 @@ public class SyncDatabases implements Runnable, Stoppable {
 
 					map.maptopsql(rs, State.UPDATE);
 				}
-
 
 			} catch (SQLException e) {
 				log.error(e);
