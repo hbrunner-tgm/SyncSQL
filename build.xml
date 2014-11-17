@@ -61,7 +61,7 @@
 	
 	<!-- Programm neue kompilieren und starten -->
     <target name="run" depends="rebuild, copy">
-        <java classname="starter.RunIt" failonerror="false" fork="yes" description="Run Sync">
+        <java classname="starter.RunIt" failonerror="true" fork="yes" description="Run Sync">
             <classpath refid="SyncDB.classpath"/>
         </java>
     </target>
