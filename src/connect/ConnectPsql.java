@@ -132,7 +132,7 @@ public class ConnectPsql implements Connect {
 	}
 	
 	/**
-	 * Close the connection to the db
+	 * Close the connection to the database
 	 */
 	@Override
 	public void exit() {

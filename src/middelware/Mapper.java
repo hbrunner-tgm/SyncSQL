@@ -79,7 +79,6 @@ public class Mapper {
 
 		/*
 		 * Snycs a delete
-		 * 
 		 */
 		case DELETE:
 
@@ -102,9 +101,7 @@ public class Mapper {
 
 		
 		/*
-		 *
 		 * Snycs a insert
-		 * 
 		 */
 		case INSERT:
 
@@ -144,9 +141,7 @@ public class Mapper {
 			break;
 
 		/*
-		 * 
 		 * Syncs a update
-		 * 
 		 */
 		case UPDATE:
 
@@ -239,7 +234,7 @@ public class Mapper {
 			break;
 
 		/*
-		 * Syncs a insert
+		 * Syncs an insert
 		 */
 		case INSERT:
 
@@ -282,7 +277,7 @@ public class Mapper {
 			break;
 
 		/*
-		 * Syncs a update
+		 * Syncs an update
 		 */
 		case UPDATE:
 

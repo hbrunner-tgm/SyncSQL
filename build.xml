@@ -20,12 +20,11 @@
 		<fileset dir="lib">
 			<include name= "**/*.jar"/>
 		</fileset>
-        <pathelement location="${build.dir}"/>
-    </path>
+        	<pathelement location="${build.dir}"/>
+    	</path>
 	
 	<!-- Source files kompilieren -->
 	<target name="compile" description="Compile project.">
-		<echo>Compile</echo>
 		<mkdir dir="${build.dir}" />
 		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="SyncDB.classpath" debug="true" deprecation="true" includeantruntime="false">
 		</javac>
@@ -40,19 +39,16 @@
 
 	<!-- build Ordner leeren/loeschen -->
 	<target name="clean" description="cleans the build-folder">
-		<echo>Clean</echo>
 		<delete dir="${build.dir}" />
 	</target>
 	
 	<!-- Javadoc erstellen -->
 	<target name="create-doc" description="Creates javadoc">
-		<echo>Create-Doc</echo>
 		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}" />
 	</target>
 	
 	<!-- Javadoc loeschen -->
 	<target name="clean-doc" description="Delete javadoc.">
-		<echo>Clean-Doc</echo>
 		<delete dir="${doc.dir}"/>
 	</target>
 	
